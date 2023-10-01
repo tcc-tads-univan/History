@@ -1,12 +1,19 @@
+using History.Api.Database;
+using History.Api.Database.Interfaces;
+using History.Api.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+var config = builder.Configuration;
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<IDbConnectionFactory>(_ => new DbConnectionFactory(config.GetConnectionString("HistoryDatabase")));
+builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
