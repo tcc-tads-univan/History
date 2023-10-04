@@ -41,7 +41,7 @@ namespace History.Api.Repository
         {
             using var connection = await _dbConnection.CreateConnection();
             await connection.ExecuteAsync(
-                @"UPDATE Trip SET Status = @Status WHERE StudentId = @StudentId AND DriverId = @DriverId",
+                @"UPDATE Trip SET Status = @Status WHERE StudentId = @StudentId AND DriverId = @DriverId AND Status = 'TRAVELING'",
                 new
                 {
                     StudentId = studentId,

@@ -15,6 +15,11 @@ namespace History.Api.Services
             _historyRepository = historyRepository;
         }
 
+        public Task CompleteTrip(int studentId, int driverId)
+        {
+            return _historyRepository.UpdateTripStatus(studentId, driverId, nameof(TripStatus.COMPLETED));
+        }
+
         public async Task<IEnumerable<TripResponse>> GetUserHistory(int userId, UserType userType)
         {
             var trips = userType.Equals(UserType.STUDENT) ? await _historyRepository.GetAllStudentTrips(userId) : await _historyRepository.GetAllDriverTrips(userId);
@@ -23,7 +28,7 @@ namespace History.Api.Services
 
         public Task SaveTrip(Trip trip)
         {
-            throw new NotImplementedException();
+            return _historyRepository.SaveTrip(trip);
         }
     }
 }

@@ -1,6 +1,9 @@
+using History.Api.BackgroundTask.Workers;
 using History.Api.Database;
 using History.Api.Database.Interfaces;
 using History.Api.Repository;
+using History.Api.Services;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,25 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IDbConnectionFactory>(_ => new DbConnectionFactory(config.GetConnectionString("HistoryDatabase")));
 builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+builder.Services.AddScoped<IHistoryService, HistoryService>();
+
+builder.Host.ConfigureServices((hostContext, services) =>
+{
+    services.AddMassTransit(x =>
+    {
+        x.AddConsumer<SaveTripConsumer>();
+        x.AddConsumer<CompleteTripConsumer>();
+
+        x.SetKebabCaseEndpointNameFormatter();
+
+        x.UsingRabbitMq((context, busFactoryConfigurator) =>
+        {
+            busFactoryConfigurator.Host(config.GetConnectionString("RabbitMq"));
+            busFactoryConfigurator.ConfigureEndpoints(context);
+        });
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
