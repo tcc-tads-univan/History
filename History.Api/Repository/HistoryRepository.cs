@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using History.Api.Database.Entities;
 using History.Api.Database.Interfaces;
-using History.Api.Enum;
 
 namespace History.Api.Repository
 {
@@ -12,23 +11,43 @@ namespace History.Api.Repository
         {
             _dbConnection = dbConnection;
         }
-        public Task<List<Trip>> GetAllTrips(int userId, UserType userType)
+
+        public async Task<IEnumerable<Trip>> GetAllDriverTrips(int driverId)
         {
-            throw new NotImplementedException();
+            using var connection = await _dbConnection.CreateConnection();
+            return await connection.QueryAsync<Trip>(
+                @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status 
+                FROM Customers WHERE DriverId = @DriverId", new { DriverId = driverId });
+        }
+
+        public async Task<IEnumerable<Trip>> GetAllStudentTrips(int studentId)
+        {
+            using var connection = await _dbConnection.CreateConnection();
+            return await connection.QueryAsync<Trip>(
+                @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status 
+                FROM Customers WHERE StudentId = @StudentId", new { StudentId = studentId });
         }
 
         public async Task SaveTrip(Trip trip)
         {
             using var connection = await _dbConnection.CreateConnection();
             await connection.ExecuteAsync(
-                @"INSERT INTO Trip()
-                VALUES()",
+                @"INSERT INTO Trip(StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status)
+                VALUES(@StudentId, @StudentName, @DriverId, @DriverName, @InitialDestination, @FinalDestination, @Price, @Date, @Status)",
                 trip);
         }
 
-        public Task UpdateTripStatus(int driverId, string status)
+        public async Task UpdateTripStatus(int driverId, int studentId, string status)
         {
-            throw new NotImplementedException();
+            using var connection = await _dbConnection.CreateConnection();
+            await connection.ExecuteAsync(
+                @"UPDATE Trip SET Status = @Status WHERE StudentId = @StudentId AND DriverId = @DriverId",
+                new
+                {
+                    StudentId = studentId,
+                    DriverId = driverId,
+                    Status = status
+                });
         }
     }
 }

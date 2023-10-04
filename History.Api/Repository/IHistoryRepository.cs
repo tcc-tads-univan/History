@@ -6,7 +6,8 @@ namespace History.Api.Repository
     public interface IHistoryRepository
     {
         Task SaveTrip(Trip trip);
-        Task UpdateTripStatus(int driverId, string status);
-        Task<List<Trip>> GetAllTrips(int userId, UserType userType);
+        Task UpdateTripStatus(int driverId, int studentId, string status);
+        Task<IEnumerable<Trip>> GetAllStudentTrips(int StudentId);
+        Task<IEnumerable<Trip>> GetAllDriverTrips(int driverId);
     }
 }
