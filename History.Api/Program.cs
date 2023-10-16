@@ -30,6 +30,9 @@ builder.Host.ConfigureServices((hostContext, services) =>
 
         x.UsingRabbitMq((context, busFactoryConfigurator) =>
         {
+            busFactoryConfigurator.ClearSerialization();
+            busFactoryConfigurator.UseRawJsonSerializer();
+
             busFactoryConfigurator.Host(config.GetConnectionString("RabbitMq"));
             busFactoryConfigurator.ConfigureEndpoints(context);
         });
@@ -39,11 +42,8 @@ builder.Host.ConfigureServices((hostContext, services) =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
