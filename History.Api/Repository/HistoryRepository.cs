@@ -17,7 +17,7 @@ namespace History.Api.Repository
             using var connection = await _dbConnection.CreateConnection();
             return await connection.QueryAsync<Trip>(
                 @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status 
-                FROM Customers WHERE DriverId = @DriverId", new { DriverId = driverId });
+                FROM Trips WHERE DriverId = @DriverId", new { DriverId = driverId });
         }
 
         public async Task<IEnumerable<Trip>> GetAllStudentTrips(int studentId)
@@ -25,14 +25,14 @@ namespace History.Api.Repository
             using var connection = await _dbConnection.CreateConnection();
             return await connection.QueryAsync<Trip>(
                 @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status 
-                FROM Customers WHERE StudentId = @StudentId", new { StudentId = studentId });
+                FROM Trips WHERE StudentId = @StudentId", new { StudentId = studentId });
         }
 
         public async Task SaveTrip(Trip trip)
         {
             using var connection = await _dbConnection.CreateConnection();
             await connection.ExecuteAsync(
-                @"INSERT INTO Trip(StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status)
+                @"INSERT INTO Trips(StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status)
                 VALUES(@StudentId, @StudentName, @DriverId, @DriverName, @InitialDestination, @FinalDestination, @Price, @Date, @Status)",
                 trip);
         }
@@ -41,7 +41,7 @@ namespace History.Api.Repository
         {
             using var connection = await _dbConnection.CreateConnection();
             await connection.ExecuteAsync(
-                @"UPDATE Trip SET Status = @Status WHERE StudentId = @StudentId AND DriverId = @DriverId AND Status = 'TRAVELING'",
+                @"UPDATE Trips SET Status = @Status WHERE StudentId = @StudentId AND DriverId = @DriverId AND Status = 'TRAVELING'",
                 new
                 {
                     StudentId = studentId,
