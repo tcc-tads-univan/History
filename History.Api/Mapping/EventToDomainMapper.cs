@@ -1,6 +1,6 @@
-﻿using History.Api.BackgroundTask.Events;
-using History.Api.Database.Entities;
+﻿using History.Api.Database.Entities;
 using History.Api.Enum;
+using SharedContracts;
 
 namespace History.Api.Mapping
 {

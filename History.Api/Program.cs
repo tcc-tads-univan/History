@@ -23,16 +23,13 @@ builder.Host.ConfigureServices((hostContext, services) =>
 {
     services.AddMassTransit(x =>
     {
-        x.AddConsumer<SaveTripConsumer>();
+        x.AddConsumer<SaveTripConsumer>(typeof(SaveTripConsumerDefinition));
         x.AddConsumer<CompleteTripConsumer>();
 
         x.SetKebabCaseEndpointNameFormatter();
 
         x.UsingRabbitMq((context, busFactoryConfigurator) =>
         {
-            busFactoryConfigurator.ClearSerialization();
-            busFactoryConfigurator.UseRawJsonSerializer();
-
             busFactoryConfigurator.Host(config.GetConnectionString("RabbitMq"));
             busFactoryConfigurator.ConfigureEndpoints(context);
         });
