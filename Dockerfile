@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["History.Api/History.Api.csproj", "History.Api/"]
+COPY ./nuget.config .
 RUN dotnet restore "History.Api/History.Api.csproj"
 COPY . .
 WORKDIR "/src/History.Api"
