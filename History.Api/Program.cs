@@ -24,7 +24,6 @@ builder.Host.ConfigureServices((hostContext, services) =>
     services.AddMassTransit(x =>
     {
         x.AddConsumer<SaveTripConsumer>(typeof(SaveTripConsumerDefinition));
-        x.AddConsumer<CompleteTripConsumer>();
 
         x.SetKebabCaseEndpointNameFormatter();
 
