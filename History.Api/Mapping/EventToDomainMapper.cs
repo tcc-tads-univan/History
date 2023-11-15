@@ -1,5 +1,6 @@
 ﻿using History.Api.Database.Entities;
 using History.Api.Enum;
+using MassTransit;
 using SharedContracts;
 
 namespace History.Api.Mapping
@@ -18,6 +19,7 @@ namespace History.Api.Mapping
                 InitialDestination = eventMessage.InitialDestination,
                 Price = eventMessage.Price,
                 Date = DateTime.Now,
+                ScheduleId = eventMessage.ScheduleId,
                 Status = nameof(TripStatus.TRAVELING)
             };
         }

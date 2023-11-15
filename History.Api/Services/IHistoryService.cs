@@ -9,5 +9,6 @@ namespace History.Api.Services
         Task<IEnumerable<TripResponse>> GetUserHistory(int userId, UserType userType);
         Task SaveTrip(Trip trip);
         Task CompleteTrip(int studentId, int driverId);
+        Task<TripResponse> GetHistory(int scheduleId);
     }
 }

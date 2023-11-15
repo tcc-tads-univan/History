@@ -24,6 +24,14 @@ namespace History.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("trip")]
+        public async Task<IActionResult> GetHistoryByScheduleId(int scheduleId)
+        {
+            var result = await _historyService.GetHistory(scheduleId);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("finish-trip")]
         public async Task<IActionResult> FinishTrip(CompleteTripRequest request)

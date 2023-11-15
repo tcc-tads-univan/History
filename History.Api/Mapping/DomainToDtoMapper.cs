@@ -1,5 +1,6 @@
 ﻿using History.Api.Contracts;
 using History.Api.Database.Entities;
+using MassTransit;
 
 namespace History.Api.Mapping
 {
@@ -18,7 +19,8 @@ namespace History.Api.Mapping
                 Price = trip.Price,
                 Status = trip.Status,
                 StudentId = trip.StudentId,
-                StudentName = trip.StudentName
+                StudentName = trip.StudentName,
+                ScheduleId = trip.ScheduleId
             };
         }
     }

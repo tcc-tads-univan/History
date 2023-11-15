@@ -20,6 +20,12 @@ namespace History.Api.Services
             return _historyRepository.UpdateTripStatus(driverId, studentId, nameof(TripStatus.COMPLETED));
         }
 
+        public async Task<TripResponse> GetHistory(int scheduleId)
+        {
+            var trip = await _historyRepository.GetTripByScheduleId(scheduleId);
+            return trip.ToTripResponse();
+        }
+
         public async Task<IEnumerable<TripResponse>> GetUserHistory(int userId, UserType userType)
         {
             var trips = userType.Equals(UserType.STUDENT) ? await _historyRepository.GetAllStudentTrips(userId) : await _historyRepository.GetAllDriverTrips(userId);

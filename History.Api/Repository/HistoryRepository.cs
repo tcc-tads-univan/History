@@ -16,15 +16,23 @@ namespace History.Api.Repository
         {
             using var connection = await _dbConnection.CreateConnection();
             return await connection.QueryAsync<Trip>(
-                @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status 
+                @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status, ScheduleId 
                 FROM Trips WHERE DriverId = @DriverId", new { DriverId = driverId });
+        }
+        
+        public async Task<Trip> GetTripByScheduleId(int scheduleId)
+        {
+            using var connection = await _dbConnection.CreateConnection();
+            return await connection.QueryFirstAsync<Trip>(
+                @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status, ScheduleId
+                FROM Trips WHERE ScheduleId = @ScheduleId", new { ScheduleId = scheduleId });
         }
 
         public async Task<IEnumerable<Trip>> GetAllStudentTrips(int studentId)
         {
             using var connection = await _dbConnection.CreateConnection();
             return await connection.QueryAsync<Trip>(
-                @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status 
+                @"SELECT Id, StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status, ScheduleId 
                 FROM Trips WHERE StudentId = @StudentId", new { StudentId = studentId });
         }
 
@@ -32,8 +40,8 @@ namespace History.Api.Repository
         {
             using var connection = await _dbConnection.CreateConnection();
             await connection.ExecuteAsync(
-                @"INSERT INTO Trips(StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status)
-                VALUES(@StudentId, @StudentName, @DriverId, @DriverName, @InitialDestination, @FinalDestination, @Price, @Date, @Status)",
+                @"INSERT INTO Trips(StudentId, StudentName, DriverId, DriverName, InitialDestination, FinalDestination, Price, Date, Status, ScheduleId)
+                VALUES(@StudentId, @StudentName, @DriverId, @DriverName, @InitialDestination, @FinalDestination, @Price, @Date, @Status, @ScheduleId)",
                 trip);
         }
 

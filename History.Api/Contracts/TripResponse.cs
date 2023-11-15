@@ -11,6 +11,7 @@
         public string FinalDestination { get; set; }
         public decimal Price { get; set; }
         public DateTime Date { get; set; }
+        public int ScheduleId { get; set; }
         public string Status { get; set; }
     }
 }
