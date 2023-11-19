@@ -45,15 +45,14 @@ namespace History.Api.Repository
                 trip);
         }
 
-        public async Task UpdateTripStatus(int driverId, int studentId, string status)
+        public async Task UpdateTripStatus(int scheduleId, string status)
         {
             using var connection = await _dbConnection.CreateConnection();
             await connection.ExecuteAsync(
-                @"UPDATE Trips SET Status = @Status WHERE StudentId = @StudentId AND DriverId = @DriverId AND Status = 'TRAVELING'",
+                @"UPDATE Trips SET Status = @Status WHERE ScheduleId = @ScheduleId AND Status = 'TRAVELING'",
                 new
                 {
-                    StudentId = studentId,
-                    DriverId = driverId,
+                    ScheduleId = scheduleId,
                     Status = status
                 });
         }

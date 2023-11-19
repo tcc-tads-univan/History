@@ -15,9 +15,9 @@ namespace History.Api.Services
             _historyRepository = historyRepository;
         }
 
-        public Task CompleteTrip(int studentId, int driverId)
+        public Task CompleteTrip(int scheduleId)
         {
-            return _historyRepository.UpdateTripStatus(driverId, studentId, nameof(TripStatus.COMPLETED));
+            return _historyRepository.UpdateTripStatus(scheduleId, nameof(TripStatus.COMPLETED));
         }
 
         public async Task<TripResponse> GetHistory(int scheduleId)
